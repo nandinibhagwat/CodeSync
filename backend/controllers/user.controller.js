@@ -6,7 +6,14 @@ const generateToken=(userid)=>{
         expiresIn:"7d",
     })
 }
+const isProd = process.env.NODE_ENV === "production";
 
+const cookieOptions = {
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: isProd ? "None" : "Lax",
+    secure: isProd,
+};
 async function signup(req,res) {
     try {
         const {email,username,password}=req.body;
@@ -37,12 +44,7 @@ async function signup(req,res) {
 
         const token=generateToken(newUser._id);
 
-        res.cookie("jwt",token,{
-            maxAge:7*24*60*60*1000,
-            httpOnly:true,  //prevents XSS attacks,
-            sameSite:"Lax",  //prevents CSRF attacks
-            secure:false
-        })
+        res.cookie("jwt", token, cookieOptions);
 
         res.status(201).json({success:true,user:newUser});
 
@@ -72,12 +74,7 @@ async function login(req,res){
 
         const token=generateToken(user._id);
 
-        res.cookie("jwt",token,{
-            maxAge:7*24*60*60*1000,
-            httpOnly:true,  //prevents XSS attacks,
-            sameSite:"Lax",  //prevents CSRF attacks
-            secure:false
-        })
+        res.cookie("jwt", token, cookieOptions);
 
         res.status(200).json({success:true,user:{
             _id:user._id,

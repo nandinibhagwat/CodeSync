@@ -10,15 +10,10 @@ const chatWithAI = async (req, res) => {
 
   try {
     const response = await axios.post(
-      'https://api.cohere.ai/v1/generate',
+      'https://api.cohere.ai/v1/chat',
       {
-        model: 'command-r-plus',
-        prompt: `
-You are a helpful coding assistant. Respond clearly and concisely to the following user message:
-
-User: ${message}
-AI:`,
-        max_tokens: 200,
+        model: 'command-r-plus-08-2024',
+        message,
         temperature: 0.6,
       },
       {
@@ -29,7 +24,7 @@ AI:`,
       }
     );
 
-    const reply = response.data.generations[0].text.trim();
+    const reply = response.data.text.trim();
     res.status(200).json({ reply });
   } catch (error) {
     console.error('AI Chat Error:', error.response?.data || error.message);

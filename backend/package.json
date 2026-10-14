@@ -23,7 +23,6 @@
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.0",
     "path": "^0.12.7",
-    "real-time-code-colab": "file:..",
     "socket.io": "^4.8.1",
     "uuid": "^11.1.0",
     "yjs": "^13.6.32"
